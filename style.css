@@ -1,0 +1,84 @@
+.PageTransitions {
+
+    text-decoration: none;
+    color: inherit;
+    border: transparent black 3px;
+    background-color: rgba(206, 10, 10, 0.5);
+    border-radius: 10px;
+    padding: 1px;
+    padding-right: 10px;
+    align-items: center;
+
+}
+
+.PageTransitionsDiv {
+    gap: 40px;
+    display: flex;
+    font-size: 30px;
+    border: 3px solid black;
+    padding: 10px;
+    justify-content: space-between;
+    background-color: rgba(221, 10, 10, 0.764);
+    border-radius: 10px;
+}
+
+.topRight {
+    display: flex;
+    gap: 10px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+   
+    align-items: center;
+  
+    font-family: Arial, sans-serif;
+}
+
+.boxWarp {
+    display: flex;
+    flex-direction: column;
+  
+    gap: 10px;
+    width: 300px;
+    padding: 25px;
+    border: solid black 3px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(8px);
+}
+
+.boxWarp h2 {
+    text-align: center;
+    margin: 0 0 10px;
+}
+
+.boxWarp input {
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid black;
+    border-radius: 8px;
+}
+
+.signBtn {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #d84315;
+    
+    color: white;
+    cursor: pointer;
+}
+
+.signBtn:hover {
+    background-color: #bf360c;
+}
