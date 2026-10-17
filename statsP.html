@@ -3,10 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>BerezSnikaHaham - Stats</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    
+
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- ===== Top menu (same on every page) ===== -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-fire">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="mainP.html">🔥 BerezSnikaHaham</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="infoP.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="statsP.html">Stats</a></li>
+                </ul>
+                <div class="d-flex gap-2">
+                    <a class="btn btn-outline-light" href="signin.html">Sign up</a>
+                    <a class="btn btn-light" href="login.html">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== Main content ===== -->
+    <main class="flex-grow-1 container py-5">
+        <h1 class="text-center mb-2">Device Stats</h1>
+        <p class="text-center text-muted mb-4">Live data from our station. Waiting for the database connection.</p>
+
+        <!-- 3 sensor cards. col-md-4 = 3 in a row on big screens, 1 under the other on phones -->
+        <div class="row g-3 mb-4 text-center">
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <div>🔥 Flame sensor</div>
+                        <div class="big-number" id="flameValue">No data</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <div>💨 Gas sensor (MQ2)</div>
+                        <div class="big-number" id="gasValue">No data</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <div>💧 Water level</div>
+                        <div class="big-number" id="waterValue">0%</div>
+                        <!-- Bar that fills up with the water level -->
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-info" id="waterBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Live camera. "ratio-16x9" keeps a video shape on every screen size -->
+        <div class="card shadow-sm mb-5">
+            <div class="card-header fw-bold">📷 Live camera (ESP-CAM)</div>
+            <div class="card-body">
+                <div class="ratio ratio-16x9 bg-dark rounded">
+                    <!-- Text shown until a stream is connected -->
+                    <div class="d-flex align-items-center justify-content-center text-white" id="cameraText">
+                        No live stream yet
+                    </div>
+                    <!-- The stream image. It stays hidden until we give it an address -->
+                    <img id="cameraImage" class="d-none" alt="Live camera">
+                </div>
+            </div>
+        </div>
+
+        <!-- Table of our devices -->
+        <h2 class="mb-3">Our devices</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover bg-white">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Device</th>
+                        <th>What it does</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Flame sensor</td>
+                        <td>Sends the DE10-Lite whether there is a flame or not</td>
+                        <td><span class="badge bg-secondary">No data</span></td>
+                    </tr>
+                    <tr>
+                        <td>MQ2 gas sensor</td>
+                        <td>Sends the DE10-Lite when it detects a high gas level</td>
+                        <td><span class="badge bg-secondary">No data</span></td>
+                    </tr>
+                    <tr>
+                        <td>Analog water level sensor</td>
+                        <td>Sends the DE10-Lite the water level</td>
+                        <td><span class="badge bg-secondary">No data</span></td>
+                    </tr>
+                    <tr>
+                        <td>ESP-CAM</td>
+                        <td>Films what the station sees and uploads it live to the website</td>
+                        <td><span class="badge bg-secondary">No data</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3">
+        BerezSnikaHaham &copy; 2026
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- 🔥 FIREBASE: when we connect Firebase, delete the comment start and end marks around the 3 script lines below -->
+    <!--
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+    -->
+    <script src="firebase.js"></script>
+
+    <script>
+        // This function puts the data from the database on the page.
+        // Firebase will give it an object that looks like this:
+        // { flame: true/false, gas: true/false, waterLevel: 0-100, cameraUrl: "http://..." }
+        function updateStats(data) {
+            if (!data) return; // no data yet - leave the page as it is
+
+            // Flame sensor
+            const flame = document.getElementById("flameValue");
+            flame.textContent = data.flame ? "Flame detected!" : "No flame";
+            flame.style.color = data.flame ? "red" : "";
+
+            // Gas sensor
+            const gas = document.getElementById("gasValue");
+            gas.textContent = data.gas ? "High gas level!" : "Normal";
+            gas.style.color = data.gas ? "red" : "";
+
+            // Water level
+            document.getElementById("waterValue").textContent = data.waterLevel + "%";
+            document.getElementById("waterBar").style.width = data.waterLevel + "%";
+
+            // Live camera
+            if (data.cameraUrl) {
+                document.getElementById("cameraImage").src = data.cameraUrl;
+                document.getElementById("cameraImage").classList.remove("d-none");
+                document.getElementById("cameraText").classList.add("d-none");
+            }
+        }
+
+        // 🔥 FIREBASE: read the data here. Remove the // in the lines below when Firebase is connected.
+        // The path "station" is only an example - use the name we create in the database.
+        // firebase.database().ref("station").on("value", function (snapshot) {
+        //     updateStats(snapshot.val());
+        // });
+    </script>
 </body>
 </html>

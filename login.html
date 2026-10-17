@@ -3,10 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>BerezSnikaHaham - Login</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    
+
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- ===== Top menu (same on every page) ===== -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-fire">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="mainP.html">🔥 BerezSnikaHaham</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="infoP.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="statsP.html">Stats</a></li>
+                </ul>
+                <div class="d-flex gap-2">
+                    <a class="btn btn-outline-light" href="signin.html">Sign up</a>
+                    <a class="btn btn-light" href="login.html">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== Login form ===== -->
+    <main class="flex-grow-1 container py-5">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-8 col-md-6 col-lg-4">
+                <form class="card shadow p-4" id="loginForm">
+                    <h2 class="text-center mb-3">Login</h2>
+
+                    <div class="mb-3">
+                        <label for="inputEmail" class="form-label">Email:</label>
+                        <input type="email" id="inputEmail" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="inputPass" class="form-label">Password:</label>
+                        <input type="password" id="inputPass" class="form-control" minlength="6" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-fire w-100">Login</button>
+
+                    <!-- Messages (errors etc.) appear here -->
+                    <div id="message" class="text-center mt-3"></div>
+
+                    <p class="text-center mt-2 mb-0">
+                        No account yet? <a href="signin.html">Sign up</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3">
+        BerezSnikaHaham &copy; 2026
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- 🔥 FIREBASE: when we connect Firebase, delete the comment start and end marks around the 2 script lines below -->
+    <!--
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    -->
+    <script src="firebase.js"></script>
+
+    <script>
+        // Runs when the user presses the Login button
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // stop the page from reloading
+
+            const email = document.getElementById("inputEmail").value;
+            const password = document.getElementById("inputPass").value;
+            const message = document.getElementById("message");
+
+            // 🔥 FIREBASE: login code goes here. Remove the // in the lines below when Firebase is connected.
+            // firebase.auth().signInWithEmailAndPassword(email, password)
+            //     .then(function () {
+            //         window.location.href = "mainP.html"; // success - go to the main page
+            //     })
+            //     .catch(function (error) {
+            //         message.textContent = error.message; // show the error
+            //     });
+
+            // Delete the line below when Firebase is connected
+            message.textContent = "Login is not connected yet.";
+        });
+    </script>
 </body>
 </html>
